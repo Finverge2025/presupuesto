@@ -21,6 +21,7 @@
     h2 {
       color: #333;
       margin-bottom: 20px;
+      text-align: center;
     }
     label {
       display: block;
@@ -41,6 +42,7 @@
       width: 100%;
       border-radius: 5px;
       cursor: pointer;
+      font-size: 16px;
     }
     button:hover {
       background-color: #0056b3;
@@ -49,6 +51,9 @@
       margin-top: 20px;
       font-size: 18px;
       font-weight: bold;
+      padding: 15px;
+      border-radius: 8px;
+      background-color: #f1f5f9;
     }
   </style>
 </head>
@@ -69,17 +74,35 @@
 
 <script>
   function calcularPresupuesto() {
-    const ingresos = parseFloat(document.getElementById('ingresos').value) || 0;
-    const gastos = parseFloat(document.getElementById('gastos').value) || 0;
-    const saldo = ingresos - gastos;
-
+    const ingresosInput = document.getElementById('ingresos');
+    const gastosInput = document.getElementById('gastos');
     const resultado = document.getElementById('resultado');
-    resultado.textContent = `Tu saldo mensual es: $${saldo.toFixed(2)}`;
+
+    const ingresos = parseFloat(ingresosInput.value);
+    const gastos = parseFloat(gastosInput.value);
+
+    if (ingresosInput.value === "" || gastosInput.value === "") {
+      resultado.style.color = 'darkorange';
+      resultado.style.backgroundColor = '#fff7e6';
+      resultado.textContent = "⚠️ Por favor, completa ambos campos para calcular tu presupuesto.";
+      return;
+    }
+
+    const saldo = ingresos - gastos;
+    resultado.textContent = `Tu saldo mensual es: $${saldo.toFixed(2)}\n`;
 
     if (saldo < 0) {
       resultado.style.color = 'red';
+      resultado.style.backgroundColor = '#ffe5e5';
+      resultado.textContent += " ⚠️ Estás en déficit. Considera reducir gastos o aumentar ingresos.";
+    } else if (saldo === 0) {
+      resultado.style.color = 'orange';
+      resultado.style.backgroundColor = '#fffbe6';
+      resultado.textContent += " ⚠️ Tu presupuesto está justo. Intenta generar un pequeño ahorro mensual.";
     } else {
       resultado.style.color = 'green';
+      resultado.style.backgroundColor = '#e6ffed';
+      resultado.textContent += " ✅ ¡Buen trabajo! Estás generando ahorro.";
     }
   }
 </script>
